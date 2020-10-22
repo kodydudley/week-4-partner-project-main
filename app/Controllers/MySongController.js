@@ -1,7 +1,7 @@
 import {
   ProxyState
 } from "../AppState.js";
-import songService from "../Services/SongsService.js";
+import mySongService from "../Services/MySongService.js";
 
 //Private
 /**Draws the Search results to the page */
@@ -17,32 +17,27 @@ function _drawActive() {
   document.getElementById("activeSong").innerHTML = ProxyState.activeSong.ActiveTemplate
 }
 
-/**Draws the Users saved songs to the page */
-function _drawPlaylist() {}
+// /**Draws the Users saved songs to the page */
+function _drawPlaylist() {
+  let playlist = ProxyState.playlist
+  let template = ""
+  playlist.forEach(p => template += p.MySongTemplate)
+  document.getElementById("playlist").innerHTML = template
+}
 
 //Public
-export default class SongsController {
+export default class MySongController {
   constructor() {
-    ProxyState.on("songs", _drawResults)
-    ProxyState.on("activeSong", _drawActive)
-    console.log("Controller");
+    ProxyState.on("playlist", _drawPlaylist)
 
     //TODO Don't forget to register your listeners and get your data
   }
 
-  addActive(data) {
-    data.preventDefault
-    songService.addActive(data)
-  }
 
 
-
-  /**Takes in the form submission event and sends the query to the service */
-  search(e) {
-    //NOTE You dont need to change this method
-    e.preventDefault();
+  getMySongs(id) {
     try {
-      songService.getMusicByQuery(e.target.query.value);
+      mySongService.getMySongs()
     } catch (error) {
       console.error(error);
     }
@@ -52,11 +47,25 @@ export default class SongsController {
    * Takes in a song id and sends it to the service in order to add it to the users playlist
    * @param {string} id
    */
-  addSong(id) {}
-
+  addSong(id) {
+    id.preventDefault
+    mySongService.addSong(id)
+  }
   /**
    * Takes in a song id to be removed from the users playlist and sends it to the server
    * @param {string} id
    */
-  removeSong(id) {}
+  removeSong(id) {
+    mySongService.removeSong(id)
+  }
+
+  playAudio() {
+    let a = document.getElementById("playAudio")
+    a.play()
+  }
+
+  pauseAudio() {
+    let a = document.getElementById("playAudio")
+    a.pause()
+  }
 }

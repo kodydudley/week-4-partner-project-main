@@ -6,7 +6,7 @@ import {
   sandBoxApi
 } from "./AxiosService.js";
 
-class SongsService {
+class MySongService {
   addActive(data) {
     ProxyState.activeSong = ProxyState.songs.find(s => s._id == data)
     console.log(ProxyState.activeSong);
@@ -14,34 +14,18 @@ class SongsService {
   }
 
   constructor() {
-
-  }
-
-  /**
-   * Takes in a search query and retrieves the results that will be put in the store
-   * @param {string} query
-   */
-  getMusicByQuery(query) {
-    //NOTE You will not need to change this method
-    let url = "https://itunes.apple.com/search?callback=?&term=" + query;
-    // @ts-ignore
-    $.getJSON(url)
-      .then(res => {
-        ProxyState.songs = res.results.map(rawData => new Song(rawData));
-        console.log(ProxyState.songs);
-      })
-      .catch(err => {
-        throw new Error(err);
-      });
+    this.getMySongs()
+    console.log("MySongService");
   }
 
   /**
    * Retrieves the saved list of songs from the sandbox
    */
   async getMySongs() {
-    let res = await sandBoxApi.get()
+    let res = await sandBoxApi.get("")
     //TODO What are you going to do with this result
     let results = res.data.data.map(rawData => new Song(rawData));
+    ProxyState.playlist = results
   }
 
   /**
@@ -49,7 +33,11 @@ class SongsService {
    * Afterwords it will update the store to reflect saved info
    * @param {string} id
    */
-  addSong(id) {
+  async addSong(id) {
+    let res = await sandBoxApi.post("", ProxyState.activeSong)
+    ProxyState.playlist = [...ProxyState.playlist, ProxyState.activeSong]
+    // ProxyState.activeSong = ProxyState.songs.find(s => s._id == data)
+    // console.log(ProxyState.activeSong);
     //TODO you only have an id, you will need to find it in the store before you can post it
     //TODO After posting it what should you do?
   }
@@ -59,10 +47,12 @@ class SongsService {
    * Afterwords it will update the store to reflect saved info
    * @param {string} id
    */
-  removeSong(id) {
+  async removeSong(id) {
     //TODO Send the id to be deleted from the server then update the store
+    let res = await sandBoxApi.delete("/" + id)
+    this.getMySongs()
   }
 }
 
-const service = new SongsService();
-export default service;
+const mySongService = new MySongService();
+export default mySongService;

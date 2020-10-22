@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/8b202a175d.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/style/main.css">
     <title>music-is-fun Kody Chris</title>
 </head>
@@ -21,10 +22,8 @@
     </header>
     <main class="container-fluid">
         <section class="row">
-            <div class="col-12 bannerStyle">
-                <p>Music is Fun</p>
-            </div>
-            <div class="offset-8 col-4">
+
+            <div class="col-12 overflow-auto mt-5 mb-5">
                 <form onsubmit="app.songsController.search(event)">
                     <input type="text" class="form-control" name="query" placeholder="Search For Music" />
                     <button class="btn btn-success mt-1 form-control" type="submit">
@@ -35,13 +34,19 @@
         </section>
 
         <section class="row">
-            <div class="col-6">
+            <div class="col-4 bg-dark text-light">
                 <h3 class="text-center">Search Results</h3>
                 <div id="songs" class="col-12 m-0">
                     <!-- template to generate -->
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <h3 class="text-center">Now Playing</h3>
+                <div id="activeSong" class="col-12 m-0">
+                    <!-- template to generate -->
+                </div>
+            </div>
+            <div class="col-4 bg-dark text-light">
                 <h3 class="text-center">Playlist</h3>
                 <div class="col-12 m-0" id="playlist">
                     <!-- template for playlist -->

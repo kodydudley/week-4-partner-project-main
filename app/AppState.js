@@ -1,6 +1,10 @@
 import Song from "./Models/Song.js"
-import { EventEmitter } from "./Utils/EventEmitter.js"
-import { isValidProp } from "./Utils/isValidProp.js"
+import {
+  EventEmitter
+} from "./Utils/EventEmitter.js"
+import {
+  isValidProp
+} from "./Utils/isValidProp.js"
 
 class AppState extends EventEmitter {
   /** Collection of Songs from search Results
@@ -9,6 +13,10 @@ class AppState extends EventEmitter {
   /**Collection of songs from the users Playlist
    * @type {Song[]} */
   playlist = []
+
+  /*** @type {Song} */
+
+  activeSong = null
 }
 
 export const ProxyState = new Proxy(new AppState(), {
